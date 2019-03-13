@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% load events_tags %}
+
+{% block content %}
+<form action="" method="get" class="form form-inline">
+    <p><h4>Filter Events  </h4></p>
+  {% bootstrap_form filterset.form %}
+  {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      Submit
+    </button>
+  {% endbuttons %}
+</form>
+
+
+<h1>Events</h1>
+
+<div class="list-group">
+
+
+ {% for object in object_list %}
+    <a href="{{object.url}}" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Title : {{object.title}}</h5>
+      <small>{{object.description}}</small>
+    </div>
+    <p class="mb-1"> <b>owner</b> : {{object.owner_name}}</p>
+  </a>
+    {% endfor %}
+
+<!--
+<ul>
+    {% for object in object_list %}
+        <li> <a href="{{object.url}}"> <b>Title</b> : {{ object.title|truncatechars:20 }} |  <b>Date</b> : {{ object.event_date }} |  <b>Participants</b> : {{ object.participants }} |  ( <b>owner</b> : {{object.owner_name}} )  </a></li>
+    {% endfor %}
+</ul>
+-->
+
+</div>
+
+
+{% if is_paginated %}
+  {% if page_obj.has_previous %}
+    <a href="?{% param_replace page=1 %}">First</a>
+    {% if page_obj.previous_page_number != 1 %}
+      <a href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
+    {% endif %}
+  {% endif %}
+
+  Page {{ page_obj.number }} of {{ paginator.num_pages }}
+
+  {% if page_obj.has_next %}
+    {% if page_obj.next_page_number != paginator.num_pages %}
+      <a href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
+    {% endif %}
+    <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+  {% endif %}
+
+{% endif %}
+
+{% endblock %}

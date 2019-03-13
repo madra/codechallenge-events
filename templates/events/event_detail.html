@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block content %}
+
+<h1>{{object.title}}</h1>
+<ul>
+        <li><b>Description</b> : {{ object.description }}</li>
+
+
+    <li><b>Date</b> : {{ object.event_date }} </li>
+
+        <li><b>Participants</b> : {{ object.participants }} </li>
+
+        <li> <b>Event Owner</b> : {{object.owner_name}} </li>
+
+        {% if user_owns_event %}
+
+        <li> <a href="{{object.edit_url}}">Edit</a> </li>
+
+        {% endif%}
+
+
+</ul>
+
+
+{% if request.user.is_authenticated %}
+
+
+{% if object.can_rsvp %}
+
+
+<a href="{{object.rsvp_url}}"  class="btn btn-primary">RSVP</a>
+
+
+{% endif %}
+
+{% endif %}
+
+{% endblock %}
