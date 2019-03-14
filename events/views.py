@@ -68,6 +68,7 @@ class EventDetailView(DetailView):
         """
         context = super(EventDetailView, self).get_context_data(**kwargs)
         event = self.object
+        # check if the user has already rspv'ed
         context['user_has_rsvp'] = event.user_has_rsvp(self.request.user)
         if event.owner == self.request.user:
             context['user_owns_event'] = True
@@ -139,7 +140,7 @@ def rsvp_event(request, pk):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Your RSVP for this event was successfully added.'
+                request, "You Successfully RSVP'ed"
             )
         else:
             errors = form.errors

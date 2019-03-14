@@ -61,7 +61,7 @@ class Event(models.Model):
         '''
         if self.event_date < timezone.now():
             raise ValidationError(
-                'Event date cannot be earlier than Today.'
+                'Event date cannot be earlier than today.'
             )
 
     @property

@@ -11,7 +11,8 @@ class LoginTestCase(unittest.TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(
-            'random', 'random@pass.com', 'randompass')
+            'random', 'random@pass.com', 'randompass'
+        )
 
     def testLogin(self):
         self.client.login(username='random', password='randompass')

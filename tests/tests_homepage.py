@@ -1,11 +1,10 @@
 # tests/views.py
 ''' test homepage view'''
 # -*- coding: utf-8 -*-
-from django.http import HttpRequest
-from django.test import SimpleTestCase
+from django.test import TransactionTestCase
 
 
-class HomePageTests(SimpleTestCase):
+class HomePageTests(TransactionTestCase):
 
     def test_home_page_status_code(self):
         response = self.client.get('/')

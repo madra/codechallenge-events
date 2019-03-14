@@ -4,7 +4,7 @@ events app
 Events is a simple app web application where users can log in, create events and RSVP on events.
 
 
-* Django 1.10
+* Django 1.11
 * Python 2.7
 
 
@@ -14,7 +14,7 @@ Directory layout
 
 Events's directory structure looks as follows::
 
-    django-sample-app/
+    events/
     ├── events
     ├── templates
     ├── README.md
@@ -51,5 +51,5 @@ The ``tests/`` directory structure::
 
     tests/
     ├── __init__.py
-    ├── homepage_tests.py
-    ├── login_tests.py
+    ├── tests_homepage_tests.py
+    ├── tests_tests.py
