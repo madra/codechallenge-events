@@ -14,6 +14,8 @@ from django.urls import reverse
 from django.conf import settings
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 
 
 User = get_user_model()
@@ -25,7 +27,7 @@ class FilteredListView(ListView):
     def get_queryset(self):
         # Get the Events and order_by pk
         queryset = super(FilteredListView, self).get_queryset().order_by(
-            '-id'
+            'event_date'
         )
         # Then use the query parameters and the queryset to
         # instantiate a filterset and save it as an attribute
@@ -69,9 +71,10 @@ class EventDetailView(DetailView):
         context = super(EventDetailView, self).get_context_data(**kwargs)
         event = self.object
         # check if the user has already rspv'ed
-        context['user_has_rsvp'] = event.user_has_rsvp(self.request.user)
-        if event.owner == self.request.user:
-            context['user_owns_event'] = True
+        if self.request.user.is_authenticated:
+            context['user_has_rsvp'] = event.user_has_rsvp(self.request.user)
+            if event.owner == self.request.user:
+                context['user_owns_event'] = True
         return context
 
 
@@ -90,9 +93,15 @@ class EventUpdateView(UpdateView):
         )
         return self.object.url()
 
+    def get_object(self, *args, **kwargs):
+        obj = super(EventUpdateView, self).get_object(*args, **kwargs)
+        if obj.owner != self.request.user:
+            raise PermissionDenied()
+        return obj
+
 
 @method_decorator(login_required, name='dispatch')
-class AddEventView(FormView):
+class AddEventView(LoginRequiredMixin, FormView):
     '''
     CBV to add an event
     '''

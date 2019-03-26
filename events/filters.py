@@ -15,7 +15,7 @@ class EventFilter(django_filters.FilterSet):
         override th filter to filter by new first
         '''
         data = data.copy()
-        data.setdefault('order', '-id')
+        data.setdefault('order', '-event_date')
         super(EventFilter, self).__init__(data, *args, **kwargs)
 
     class Meta:
